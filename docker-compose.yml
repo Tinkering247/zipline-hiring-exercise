@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  grouper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: csv-grouper:latest
+    volumes:
+      # Mount the current directory to access input files and save output
+      - ./:/data:ro
+    working_dir: /data
+    # Override entrypoint to use the mounted data directory
+    entrypoint: ["ruby", "/app/grouper.rb"]
+    # Examples (uncomment and modify as needed):
+    # command: ["input1.csv", "email"]
+    # command: ["input2.csv", "phone"]
+    # command: ["input3.csv", "email_or_phone"]
+
+  # Service for running tests
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    image: csv-grouper-test:latest
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: ["ruby", "test_grouper.rb"]

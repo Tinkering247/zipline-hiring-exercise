@@ -1,0 +1,19 @@
+# Test Dockerfile with minitest included
+FROM ruby:3.2-alpine
+
+WORKDIR /app
+
+# Install test dependencies
+RUN apk add --no-cache \
+    tzdata \
+    build-base
+
+# Copy application and test files
+COPY grouper.rb test_grouper.rb ./
+COPY input*.csv ./
+
+# Make scripts executable
+RUN chmod +x grouper.rb test_grouper.rb
+
+# Run tests by default
+CMD ["ruby", "test_grouper.rb"]

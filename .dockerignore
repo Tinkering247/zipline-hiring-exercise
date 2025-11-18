@@ -1,0 +1,20 @@
+# Ignore output files
+output*.csv
+
+# Ignore test files in production image
+test_grouper.rb
+Dockerfile.test
+
+# Ignore documentation
+SOLUTION.md
+README.md
+
+# Ignore scripts
+run_examples.sh
+
+# Ignore git
+.git
+.gitignore
+
+# Ignore Docker files
+docker-compose.yml
