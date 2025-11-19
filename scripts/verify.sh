@@ -25,9 +25,9 @@ required_files=(
     "Dockerfile"
     "Dockerfile.test"
     "docker-compose.yml"
-    "input1.csv"
-    "input2.csv"
-    "input3.csv"
+    "data/input1.csv"
+    "data/input2.csv"
+    "data/input3.csv"
     "SOLUTION.md"
     "QUICKSTART.md"
 )
@@ -68,34 +68,34 @@ echo ""
 # Test each input file
 echo "✓ Testing input files..."
 
-echo "  Testing input1.csv with email..."
-if docker run --rm -v "$(pwd)":/data csv-grouper /data/input1.csv email > /dev/null 2>&1; then
-    echo "    ✓ input1.csv (email)"
+echo "  Testing data/input1.csv with email..."
+if docker run --rm -v "$(pwd)":/workspace csv-grouper /workspace/data/input1.csv email > /dev/null 2>&1; then
+    echo "    ✓ data/input1.csv (email)"
 else
-    echo "❌ Failed to process input1.csv"
+    echo "❌ Failed to process data/input1.csv"
     exit 1
 fi
 
-echo "  Testing input2.csv with phone..."
-if docker run --rm -v "$(pwd)":/data csv-grouper /data/input2.csv phone > /dev/null 2>&1; then
-    echo "    ✓ input2.csv (phone)"
+echo "  Testing data/input2.csv with phone..."
+if docker run --rm -v "$(pwd)":/workspace csv-grouper /workspace/data/input2.csv phone > /dev/null 2>&1; then
+    echo "    ✓ data/input2.csv (phone)"
 else
-    echo "❌ Failed to process input2.csv"
+    echo "❌ Failed to process data/input2.csv"
     exit 1
 fi
 
-echo "  Testing input3.csv with email_or_phone..."
-if docker run --rm -v "$(pwd)":/data csv-grouper /data/input3.csv email_or_phone > /dev/null 2>&1; then
-    echo "    ✓ input3.csv (email_or_phone)"
+echo "  Testing data/input3.csv with email_or_phone..."
+if docker run --rm -v "$(pwd)":/workspace csv-grouper /workspace/data/input3.csv email_or_phone > /dev/null 2>&1; then
+    echo "    ✓ data/input3.csv (email_or_phone)"
 else
-    echo "❌ Failed to process input3.csv"
+    echo "❌ Failed to process data/input3.csv"
     exit 1
 fi
 echo ""
 
 # Check docker-compose
 echo "✓ Testing docker-compose..."
-if docker-compose run --rm grouper input1.csv email > /dev/null 2>&1; then
+if docker-compose run --rm grouper data/input1.csv email > /dev/null 2>&1; then
     echo "  Docker Compose works correctly"
 else
     echo "❌ Docker Compose failed"
@@ -110,7 +110,7 @@ echo ""
 echo "Your solution is ready for submission!"
 echo ""
 echo "Quick reference:"
-echo "  • Run program: docker run --rm -v \"\$(pwd)\":/data csv-grouper /data/input1.csv email"
+echo "  • Run program: docker run --rm -v \"\$(pwd)\":/workspace csv-grouper /workspace/data/input1.csv email"
 echo "  • Run tests:   docker run --rm csv-grouper-test"
 echo "  • See docs:    cat SOLUTION.md"
 echo "  • Quick start: cat QUICKSTART.md"

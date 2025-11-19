@@ -259,33 +259,33 @@ end
 
 class TestIntegration < Minitest::Test
   def test_input1_csv_exists
-    assert File.exist?('input1.csv'), 'input1.csv should exist'
+    assert File.exist?('data/input1.csv'), 'data/input1.csv should exist'
   end
 
   def test_input2_csv_exists
-    assert File.exist?('input2.csv'), 'input2.csv should exist'
+    assert File.exist?('data/input2.csv'), 'data/input2.csv should exist'
   end
 
   def test_input3_csv_exists
-    assert File.exist?('input3.csv'), 'input3.csv should exist'
+    assert File.exist?('data/input3.csv'), 'data/input3.csv should exist'
   end
 
   def test_can_process_input1_with_email
-    grouper = CSVGrouper.new('input1.csv', 'email')
+    grouper = CSVGrouper.new('data/input1.csv', 'email')
     result = grouper.process
     assert result.size > 1, 'Should have processed rows'
     assert_equal 'PersonID', result[0][0], 'First column should be PersonID'
   end
 
   def test_can_process_input2_with_phone
-    grouper = CSVGrouper.new('input2.csv', 'phone')
+    grouper = CSVGrouper.new('data/input2.csv', 'phone')
     result = grouper.process
     assert result.size > 1, 'Should have processed rows'
     assert_equal 'PersonID', result[0][0], 'First column should be PersonID'
   end
 
   def test_can_process_input3_with_email_or_phone
-    grouper = CSVGrouper.new('input3.csv', 'email_or_phone')
+    grouper = CSVGrouper.new('data/input3.csv', 'email_or_phone')
     result = grouper.process
     assert result.size > 1, 'Should have processed rows'
     assert_equal 'PersonID', result[0][0], 'First column should be PersonID'

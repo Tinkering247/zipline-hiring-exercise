@@ -55,20 +55,20 @@ This solution identifies and groups rows in CSV files that may represent the sam
 docker build -t csv-grouper .
 
 # Process a file with email matching
-docker run --rm -v "$(pwd)":/data csv-grouper /data/input1.csv email > output1.csv
+docker run --rm -v "$(pwd)":/workspace csv-grouper /workspace/data/input1.csv email > output1.csv
 
 # Process with phone matching
-docker run --rm -v "$(pwd)":/data csv-grouper /data/input2.csv phone > output2.csv
+docker run --rm -v "$(pwd)":/workspace csv-grouper /workspace/data/input2.csv phone > output2.csv
 
 # Process with email OR phone matching
-docker run --rm -v "$(pwd)":/data csv-grouper /data/input3.csv email_or_phone > output3.csv
+docker run --rm -v "$(pwd)":/workspace csv-grouper /workspace/data/input3.csv email_or_phone > output3.csv
 ```
 
 ### Option 2: Docker Compose
 
 ```bash
 # Edit docker-compose.yml to specify input file and matching type, then:
-docker-compose run --rm grouper input1.csv email > output1.csv
+docker-compose run --rm grouper data/input1.csv email > output1.csv
 ```
 
 ### Option 3: Native Ruby (if Ruby 3.x is installed)
@@ -78,9 +78,9 @@ docker-compose run --rm grouper input1.csv email > output1.csv
 chmod +x grouper.rb
 
 # Run directly
-./grouper.rb input1.csv email > output1.csv
-./grouper.rb input2.csv phone > output2.csv
-./grouper.rb input3.csv email_or_phone > output3.csv
+./grouper.rb data/input1.csv email > output1.csv
+./grouper.rb data/input2.csv phone > output2.csv
+./grouper.rb data/input3.csv email_or_phone > output3.csv
 ```
 
 ### Helper Scripts
@@ -93,8 +93,8 @@ docker-compose run --rm test
 ruby test_grouper.rb
 
 # Process all sample files (creates output1.csv, output2.csv, output3.csv)
-chmod +x run_examples.sh
-./run_examples.sh
+chmod +x scripts/run_examples.sh
+./scripts/run_examples.sh
 ```
 
 ## Testing
@@ -237,16 +237,24 @@ For production use cases:
 
 ```
 .
+├── README.md               # Project overview
+├── SOLUTION.md             # This file - technical deep-dive
+├── QUICKSTART.md           # Quick usage guide
+├── ALGORITHM_EXAMPLE.md    # Algorithm walkthrough
 ├── Dockerfile              # Production image (minimal, non-root user)
 ├── Dockerfile.test         # Test image with test dependencies
 ├── docker-compose.yml      # Easy orchestration
-├── grouper.rb              # Main application
+├── grouper.rb              # Main Ruby application
+├── grouper.py              # Python Union-Find implementation
+├── grouper_simple.py       # Python nested loops implementation
 ├── test_grouper.rb         # Comprehensive test suite
-├── run_examples.sh         # Helper script
-├── SOLUTION.md            # This file
-├── input1.csv             # Sample data
-├── input2.csv             # Sample data (multiple phone/email columns)
-└── input3.csv             # Large sample data
+├── data/                   # Sample input files
+│   ├── input1.csv          # Basic examples
+│   ├── input2.csv          # Multiple phone/email columns
+│   └── input3.csv          # Large dataset (20K rows)
+└── scripts/                # Helper scripts
+    ├── run_examples.sh     # Process all sample files
+    └── verify.sh           # Automated verification
 ```
 
 ## Platform Engineering Considerations
@@ -273,9 +281,9 @@ This solution is CI/CD-ready:
 
 - name: Process sample data
   run: |
-    docker-compose run --rm grouper input1.csv email > output1.csv
-    docker-compose run --rm grouper input2.csv phone > output2.csv
-    docker-compose run --rm grouper input3.csv email_or_phone > output3.csv
+    docker-compose run --rm grouper data/input1.csv email > output1.csv
+    docker-compose run --rm grouper data/input2.csv phone > output2.csv
+    docker-compose run --rm grouper data/input3.csv email_or_phone > output3.csv
 ```
 
 ## Future Enhancements
